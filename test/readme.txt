@@ -1,1 +1,2 @@
 yes minister!
+yes prime !
