@@ -5,7 +5,7 @@ using namespace std;
 // kmp 算法
 void getNext(int* next, string& s)
 {
-	// initiliazed 
+	// 初始化
 	int j = 0;
 	next[0] = 0;
 	for(int i = 1; i < s.size(); i++) {
