@@ -2,7 +2,7 @@
 #include<string>
 using namespace std;
 
-// kmp
+// kmp 算法
 void getNext(int* next, string& s)
 {
 	// initiliazed 
