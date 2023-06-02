@@ -32,6 +32,7 @@
 
         4.拓展文件的长度，当前文件10b,110b,增加100个字节
         lseek(fd, 100, SEEK_END);
+        注意:需要写一次数据
 */
 #include <sys/types.h>
 #include <sys/stat.h>
