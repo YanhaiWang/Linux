@@ -14,6 +14,11 @@
         - 返回值
             只有调用失败，才有返回值，返回-1，并且设置errno
             如果调用成功，没有返回值
+
+    int execv(const char *path, char *const argv[]);
+    argv是需要的参数的一个字符串数组
+    char* argv[] = {"ps", "aux", NULL}
+    execv("/bin/ps", argv);
 */
 #include <unistd.h>
 #include <stdio.h>
