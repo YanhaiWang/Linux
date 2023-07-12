@@ -39,6 +39,7 @@ int main() {
     if(pid > 0) {
         // 父进程
         printf("i am parent, pid : %d\n", getpid());
+
         // 从管道的读取端读取数据
         char buf[1024] = {0};
         while (1)
@@ -64,6 +65,7 @@ int main() {
 
             int len = read(pipefd[0], buf, sizeof(buf));
             printf("child recv : %s, pid : %d\n", buf, getpid());
+            bzero(buf, 1024);
         }
     }
 
