@@ -9,14 +9,14 @@
 #define BIND_ERROR -1
 #define LISTEN_ERROR -1
 #define ACCEPT_ERROR -1
-// #define SOCKET_ERROR -1
-#define SEND_ERROR -1
+// #define SEND_ERROR -1
+typedef int SOCKET;
 
 int main(int argc, char* argv[]) {
     // 利用Socket API 建立一个简易的TCP服务端
     
     // 1 创建一个socket 套接字
-    int sockfd = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);  // protocal = 0 自动选择协议
+    SOCKET sockfd = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);  // protocal = 0 自动选择协议
     if(sockfd == INVALID_SOCKET) {
         printf("错误,建立Socket失败...\n");
     }
@@ -54,25 +54,47 @@ int main(int argc, char* argv[]) {
     // 4 accept 等待客户端连接
     struct sockaddr_in clientAddr = {};
     int nAddrin = sizeof(clientAddr);
+    SOCKET _cSockfd = INVALID_SOCKET;
     char msgBuf[] = "Hello, I am Server.";
 
+    _cSockfd = accept(sockfd, (struct sockaddr*)&clientAddr, &nAddrin); // 返回客户端的sock信息
+    if(_cSockfd == INVALID_SOCKET) {
+        printf("ERROR,接受到无效客户端的SOCKET...\n");
+    }
+    printf("新客户端加入: socket = %d, IP = %s\n", _cSockfd, inet_ntoa(clientAddr.sin_addr));
+
+    char _recvBuf[128] = {};
     while(1) {
-        int _cSockfd = accept(sockfd, (struct sockaddr*)&clientAddr, &nAddrin); // 返回客户端的sock信息
-
-        if(_cSockfd == ACCEPT_ERROR) {
-            printf("ERROR,接受到无效客户端的SOCKET...\n");
+        // 5 接收客户端数据
+        int nLen = recv(_cSockfd, _recvBuf, 128, 0);
+        if(nLen <= 0) {
+            printf("客户端已退出， 任务结束。\n");
+            break;
         }
-        printf("新客户端加入: IP = %s\n", inet_ntoa(clientAddr.sin_addr));
+        printf("收到命令: %s\n", _recvBuf);
 
-        // 5 send 向客户端发送一条数据
-        ret = send(_cSockfd, msgBuf, strlen(msgBuf) + 1, 0); // +1 发送结尾符
-        if(ret == SEND_ERROR) {
-            printf("发送失败...\n");
+        // 6 处理请求
+        if(strcmp(_recvBuf, "getName") == 0) {
+            // 7 send 向客户端发送一条数据
+            char msgBuf[] = "Wang Yanhai.";
+            send(_cSockfd, msgBuf, strlen(msgBuf) + 1, 0);
+        }
+        else if(strcmp(_recvBuf, "getAge") == 0) {
+            // 7 send 向客户端发送一条数据
+            char msgBuf[] = "23.";
+            send(_cSockfd, msgBuf, strlen(msgBuf) + 1, 0);
+        }
+        else {
+            // 7 send 向客户端发送一条数据
+            char msgBuf[] = "What do you want?";
+            send(_cSockfd, msgBuf, strlen(msgBuf) + 1, 0); // +1 发送结尾符
         }
     }
     
     // 6 关闭套接字 close socket
     close(sockfd);
 
+    printf("已退出。\n");
+    // getchar();
     return 0;
 }

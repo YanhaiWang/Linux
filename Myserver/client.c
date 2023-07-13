@@ -33,15 +33,33 @@ int main(int argc, char* argv[]) {
         printf("连接服务器成功...\n");
     }
 
-    // 3 接收服务器信息 recv
-    char recvBuf[256] = {};
-    int nlen = recv(sockfd, recvBuf, 256, 0);
-    if(nlen > 0) {
-        printf("接收到数据: %s\n",  recvBuf);
+    while(1) {
+        // 3 用户输入请求命令
+        char cmdBuf[128] = {};
+        scanf("%s", cmdBuf);
+
+        // 4 处理请求命令
+        if(strcmp(cmdBuf, "exit") == 0) {
+            printf("收到exit命令， 任务结束。\n");
+            break;
+        }
+        else {
+            // 5 向服务端发送请求
+            send(sockfd, cmdBuf, strlen(cmdBuf) + 1, 0);
+        }
+
+        // 6 接收服务器信息 recv
+        char recvBuf[128] = {};
+        int nlen = recv(sockfd, recvBuf, 128, 0);
+        if(nlen > 0) {
+            printf("接收到数据: %s\n",  recvBuf);
+        }
     }
 
-    // 4 关闭套接字 close
+    // 7 关闭套接字 close
     close(sockfd);
 
+    printf("已退出。\n");
+    getchar();
     return 0;
 }
