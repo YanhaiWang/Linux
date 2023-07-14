@@ -4,9 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-
-#define INVALID_SOCKET -1
-#define CONNECT_ERROR -1
+#include "server.h"
 
 int main(int argc, char* argv[]) {
     // 利用Socket API 建立一个简易的TCP客户端
@@ -52,7 +50,8 @@ int main(int argc, char* argv[]) {
         char recvBuf[128] = {};
         int nlen = recv(sockfd, recvBuf, 128, 0);
         if(nlen > 0) {
-            printf("接收到数据: %s\n",  recvBuf);
+            struct DataPackage* dp = (struct DataPackage*) recvBuf;
+            printf("接收到数据: 年龄=%d , 姓名=%s\n", dp->age, dp->name);
         }
     }
 
