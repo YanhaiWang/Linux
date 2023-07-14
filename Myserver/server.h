@@ -10,7 +10,7 @@ typedef int SOCKET;
 
 enum CMD{
     CMD_LOGIN,
-    CMD_LOGINOUT,
+    CMD_LOGOUT,
     CMD_ERROR
 };
 
@@ -40,9 +40,9 @@ struct LogoutResult{
     int result;
 };
 
-struct DataPackage{
-    int age;
-    char name;
-};
+// struct DataPackage{
+//     int age;
+//     char name;
+// };
 
 #endif

@@ -51,7 +51,7 @@ int main(int argc, char* argv[]) {
     SOCKET _cSockfd = INVALID_SOCKET;
     char msgBuf[] = "Hello, I am Server.";
 
-    _cSockfd = accept(sockfd, (struct sockaddr*)&clientAddr, &nAddrin); // 返回客户端的sock信息
+    _cSockfd = accept(sockfd, (struct sockaddr*)&clientAddr, (socklen_t*)&nAddrin); // 返回客户端的sock信息
     if(_cSockfd == INVALID_SOCKET) {
         printf("ERROR,接受到无效客户端的SOCKET...\n");
     }
@@ -79,7 +79,7 @@ int main(int argc, char* argv[]) {
                 send(_cSockfd, (char*)&ret, sizeof(struct LoginResult), 0);    
             }
             break;
-            case CMD_LOGINOUT: {
+            case CMD_LOGOUT: {
                 struct Logout logout = {};
                 recv(_cSockfd, (char*)&logout, sizeof(logout), 0);
                 // 忽略判断用户名密码是否正确的过程
