@@ -19,11 +19,11 @@ int main(int argc, char* argv[]) {
     }
 
     // 2 连接服务器 connect
-    struct sockaddr_in _sin = {};
+    sockaddr_in _sin = {};
     _sin.sin_family = PF_INET;
     _sin.sin_port = htons(4567);
     _sin.sin_addr.s_addr = inet_addr("127.0.0.1");
-    int ret = connect(sockfd, (struct sockaddr*)&_sin, sizeof(struct sockaddr_in));
+    int ret = connect(sockfd, (sockaddr*)&_sin, sizeof(sockaddr_in));
     if(ret == CONNECT_ERROR) {
         printf("错误,连接服务器失败...\n");
     }
@@ -42,27 +42,27 @@ int main(int argc, char* argv[]) {
             break;
         }
         else if(strcmp(cmdBuf, "login") == 0){
-            struct Login login = {"wyh", "wyhmm"};
-            struct DataHeader dh = {sizeof(login), CMD_LOGIN}; 
+            Login login = {"wyh", "wyhmm"};
+            DataHeader dh = {sizeof(login), CMD_LOGIN}; 
             // 5 向服务端发送请求
             send(sockfd, (const char*)&dh, sizeof(dh), 0); // 发送消息头
             send(sockfd, (const char*)&login, sizeof(login), 0); // 发送消息体
             // 6 接收服务器返回的数据
-            struct DataHeader retHeader = {}; 
-            struct LoginResult loginRet = {};
+            DataHeader retHeader = {}; 
+            LoginResult loginRet = {};
             recv(sockfd, (char*)&retHeader, sizeof(retHeader), 0); // 接收消息头
             recv(sockfd, (char*)&loginRet, sizeof(loginRet), 0); // 接收消息体
             printf("LoginResult : %d\n", loginRet.result);
         }
         else if(strcmp(cmdBuf, "logout") == 0){
-            struct Logout logout = {"wyh"};
-            struct DataHeader dh = {sizeof(logout), CMD_LOGOUT}; 
+            Logout logout = {"wyh"};
+            DataHeader dh = {sizeof(logout), CMD_LOGOUT}; 
             // 5 向服务端发送请求
             send(sockfd, (const char*)&dh, sizeof(dh), 0); // 发送消息头
             send(sockfd, (const char*)&logout, sizeof(logout), 0); // 发送消息体
             // 6 接收服务器返回的数据
-            struct DataHeader retHeader = {}; 
-            struct LogoutResult logoutRet = {};
+            DataHeader retHeader = {}; 
+            LogoutResult logoutRet = {};
             recv(sockfd, (char*)&retHeader, sizeof(retHeader), 0); // 接收消息头
             recv(sockfd, (char*)&logoutRet, sizeof(logoutRet), 0); // 接收消息体
             printf("LogoutResult : %d\n", logoutRet.result);

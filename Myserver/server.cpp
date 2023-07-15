@@ -19,14 +19,14 @@ int main(int argc, char* argv[]) {
     }
 
     // 2 bind 绑定用于接受客户端连接的网络端口
-    struct sockaddr_in _sin = {};
+    sockaddr_in _sin = {};
     _sin.sin_family = PF_INET; // domain 协议族
 
     _sin.sin_port = htons(4567); // 端口号 大小端转换字节序 host to net unsigned short
     
     _sin.sin_addr.s_addr = INADDR_ANY; // inet_addr("127.0.0.1"); // IP地址
 
-    int ret = bind(sockfd, (struct sockaddr*)&_sin, sizeof(_sin));
+    int ret = bind(sockfd, (sockaddr*)&_sin, sizeof(_sin));
     
     if(ret == BIND_ERROR) {
         printf("ERROR,绑定网络端口失败...\n");
@@ -46,12 +46,12 @@ int main(int argc, char* argv[]) {
     }
 
     // 4 accept 等待客户端连接
-    struct sockaddr_in clientAddr = {};
+    sockaddr_in clientAddr = {};
     int nAddrin = sizeof(clientAddr);
     SOCKET _cSockfd = INVALID_SOCKET;
     char msgBuf[] = "Hello, I am Server.";
 
-    _cSockfd = accept(sockfd, (struct sockaddr*)&clientAddr, (socklen_t*)&nAddrin); // 返回客户端的sock信息
+    _cSockfd = accept(sockfd, (sockaddr*)&clientAddr, (socklen_t*)&nAddrin); // 返回客户端的sock信息
     if(_cSockfd == INVALID_SOCKET) {
         printf("ERROR,接受到无效客户端的SOCKET...\n");
     }
@@ -60,9 +60,9 @@ int main(int argc, char* argv[]) {
     // char _recvBuf[128] = {};
     while(1) {
         // 5 接收客户端数据
-        struct DataHeader header = {};
+        DataHeader header = {};
 
-        int nLen = recv(_cSockfd, (char*)&header,sizeof(struct DataHeader), 0);
+        int nLen = recv(_cSockfd, (char*)&header,sizeof(DataHeader), 0);
         if(nLen <= 0) {
             printf("客户端已退出， 任务结束。\n");
             break;
@@ -71,19 +71,19 @@ int main(int argc, char* argv[]) {
         
         switch(header.cmd) {
             case CMD_LOGIN: {
-                struct Login login = {};
-                recv(_cSockfd, (char*)&login, sizeof(struct Login), 0);
+                Login login = {};
+                recv(_cSockfd, (char*)&login, sizeof(Login), 0);
                 // 忽略判断用户名密码是否正确的过程
-                struct LoginResult ret = {1};
-                send(_cSockfd, (char*)&header, sizeof(struct DataHeader), 0);
-                send(_cSockfd, (char*)&ret, sizeof(struct LoginResult), 0);    
+                LoginResult ret = {1};
+                send(_cSockfd, (char*)&header, sizeof(DataHeader), 0);
+                send(_cSockfd, (char*)&ret, sizeof(LoginResult), 0);    
             }
             break;
             case CMD_LOGOUT: {
-                struct Logout logout = {};
+                Logout logout = {};
                 recv(_cSockfd, (char*)&logout, sizeof(logout), 0);
                 // 忽略判断用户名密码是否正确的过程
-                struct LogoutResult ret = {1};
+                LogoutResult ret = {1};
                 send(_cSockfd, (char*)&header, sizeof(header), 0);
                 send(_cSockfd, (char*)&ret, sizeof(ret), 0);
             }
