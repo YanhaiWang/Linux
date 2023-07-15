@@ -42,28 +42,23 @@ int main(int argc, char* argv[]) {
             break;
         }
         else if(strcmp(cmdBuf, "login") == 0){
-            Login login = {"wyh", "wyhmm"};
-            DataHeader dh = {sizeof(login), CMD_LOGIN}; 
             // 5 向服务端发送请求
-            send(sockfd, (const char*)&dh, sizeof(dh), 0); // 发送消息头
+            Login login;
+            strcpy(login.userName, "wyh"); // c++不能对字符数组直接拷贝
+            strcpy(login.PassWord, "wyhmima");
             send(sockfd, (const char*)&login, sizeof(login), 0); // 发送消息体
             // 6 接收服务器返回的数据
-            DataHeader retHeader = {}; 
             LoginResult loginRet = {};
-            recv(sockfd, (char*)&retHeader, sizeof(retHeader), 0); // 接收消息头
             recv(sockfd, (char*)&loginRet, sizeof(loginRet), 0); // 接收消息体
             printf("LoginResult : %d\n", loginRet.result);
         }
         else if(strcmp(cmdBuf, "logout") == 0){
-            Logout logout = {"wyh"};
-            DataHeader dh = {sizeof(logout), CMD_LOGOUT}; 
             // 5 向服务端发送请求
-            send(sockfd, (const char*)&dh, sizeof(dh), 0); // 发送消息头
+            Logout logout;
+            strcpy(logout.userName, "wyh"); 
             send(sockfd, (const char*)&logout, sizeof(logout), 0); // 发送消息体
             // 6 接收服务器返回的数据
-            DataHeader retHeader = {}; 
             LogoutResult logoutRet = {};
-            recv(sockfd, (char*)&retHeader, sizeof(retHeader), 0); // 接收消息头
             recv(sockfd, (char*)&logoutRet, sizeof(logoutRet), 0); // 接收消息体
             printf("LogoutResult : %d\n", logoutRet.result);
         }

@@ -10,7 +10,9 @@ typedef int SOCKET;
 
 enum CMD{
     CMD_LOGIN,
+    CMD_LOGIN_RESULT,
     CMD_LOGOUT,
+    CMD_LOGOUT_RESULT,
     CMD_ERROR
 };
 
@@ -22,21 +24,42 @@ struct DataHeader
 };
 
 // DataPackage
-struct Login
+struct Login : public DataHeader
 {
+    Login() {
+        dataLength = sizeof(Login);
+        cmd = CMD_LOGIN;
+    }
     char userName[32];
     char PassWord[32];
 };
 
-struct LoginResult{
+struct LoginResult : public DataHeader
+{
+    LoginResult() {
+        dataLength = sizeof(LoginResult);
+        cmd = CMD_LOGIN_RESULT;
+        result = 0;
+    }
     int result;
 };
 
-struct Logout{
+struct Logout : public DataHeader
+{
+    Logout() {
+        dataLength = sizeof(Logout);
+        cmd = CMD_LOGOUT;
+    }
     char userName[32];
 };
 
-struct LogoutResult{
+struct LogoutResult : public DataHeader
+{
+    LogoutResult() {
+        dataLength = sizeof(LogoutResult);
+        cmd = CMD_LOGOUT_RESULT;
+        result = 0;
+    }
     int result;
 };
 
