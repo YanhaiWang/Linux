@@ -1,18 +1,30 @@
 #ifndef __SERVER_H__
 #define __SERVER_H__
 
-#define INVALID_SOCKET -1
-#define BIND_ERROR -1
-#define LISTEN_ERROR -1
-#define ACCEPT_ERROR -1
-#define CONNECT_ERROR -1
-typedef int SOCKET;
+#ifdef _WIN32
+    #define WIN32_LEAN_AND_MEAN
+    #include<windows.h>
+    #include<WinSock2.h>
+    #pragma comment(lib, "ws2_32.lib")
+#else
+    #include<unistd.h>
+    #include<arpa/inet.h>
+    #include<string.h>
+
+    #define SOCKET int
+    #define INVALID_SOCKET (SOCKET) (~0)
+    #define BIND_ERROR -1
+    #define LISTEN_ERROR -1
+    #define ACCEPT_ERROR -1
+    #define CONNECT_ERROR -1
+#endif
 
 enum CMD{
     CMD_LOGIN,
     CMD_LOGIN_RESULT,
     CMD_LOGOUT,
     CMD_LOGOUT_RESULT,
+    CMD_NEW_USER_JOIN,
     CMD_ERROR
 };
 
