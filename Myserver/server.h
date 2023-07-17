@@ -10,14 +10,14 @@
     #include<unistd.h>
     #include<arpa/inet.h>
     #include<string.h>
-
     #define SOCKET int
     #define INVALID_SOCKET (SOCKET) (~0)
-    #define BIND_ERROR -1
-    #define LISTEN_ERROR -1
+    #define SOCKET_ERROR       (-1)
     #define ACCEPT_ERROR -1
     #define CONNECT_ERROR -1
 #endif
+
+
 
 enum CMD{
     CMD_LOGIN,
@@ -73,6 +73,16 @@ struct LogoutResult : public DataHeader
         result = 0;
     }
     int result;
+};
+
+struct NewUserJoin : public DataHeader
+{
+    NewUserJoin() {
+        dataLength = sizeof(NewUserJoin);
+        cmd = CMD_NEW_USER_JOIN;
+        sock = 0;
+    }
+    int sock;
 };
 
 // struct DataPackage{

@@ -68,15 +68,14 @@ int main(int argc, char* argv[]) {
     // 2 bind 绑定用于接受客户端连接的网络端口
     sockaddr_in _sin = {};
     _sin.sin_family = PF_INET; // domain 协议族
+
     _sin.sin_port = htons(4567); // 端口号 大小端转换字节序 host to net unsigned short
-#ifdef _WIN32
-    _sin.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
-#else
-    _sin.sin_addr.s_addr = INADDR_ANY; ; // inet_addr("127.0.0.1"); // IP地址
-#endif
+    
+    _sin.sin_addr.s_addr = INADDR_ANY; // inet_addr("127.0.0.1"); // IP地址
 
     int ret = bind(sockfd, (sockaddr*)&_sin, sizeof(_sin));
-    if(ret == SOCKET_ERROR) {
+    
+    if(ret == BIND_ERROR) {
         printf("ERROR,绑定网络端口失败...\n");
     }
     else {
@@ -86,7 +85,7 @@ int main(int argc, char* argv[]) {
     // 3 listen 监听网络端口
     ret = listen(sockfd, 5);
 
-    if(ret == SOCKET_ERROR) {
+    if(ret == LISTEN_ERROR) {
         printf("ERROR,监听端口失败\n");
     }
     else {
@@ -94,8 +93,7 @@ int main(int argc, char* argv[]) {
     }
 
     // char _recvBuf[128] = {};
-    while(1) 
-    {
+    while(1) {
         // 伯克利套接字 BSD socket
         fd_set fdRead; // 描述符(socket)集合
         fd_set fdWrite;
@@ -111,20 +109,15 @@ int main(int argc, char* argv[]) {
         FD_SET(sockfd, &fdWrite);
         FD_SET(sockfd, &fdExp);
 
-        SOCKET maxSock = sockfd;
         for(int n = g_clients.size() - 1; n >= 0 ; n--) {
             FD_SET(g_clients[n], &fdRead);
-            if(maxSock < g_clients[n])
-            {
-                maxSock = g_clients[n];
-            }
         }
 
         // nfds 是一个整形值 是指fd_set集合中所有的文件描述符(socket)的范围，而不是数量
         // 是所有文件描述符最大值 + 1  在Windows中这个参数可以写0
         timeval t = {1, 0}; 
         // timeval t = {0, 0} // 设置为非阻塞,处理更多业务
-        int ret = select(maxSock + 1, &fdRead, &fdWrite, &fdExp, &t);  // 设置为所有的文件描述符中最大的 + 1
+        int ret = select(sockfd + 1, &fdRead, &fdWrite, &fdExp, &t);
         if(ret < 0) {
             printf("select任务结束。\n");
             break;
@@ -168,8 +161,8 @@ int main(int argc, char* argv[]) {
                 }   
             }
         }
-
-        // printf("空闲时间处理其他业务..\n");
+    
+        printf("空闲时间处理其他业务..\n");
 
         // // 6 处理请求
         // if(strcmp(_recvBuf, "getInfo") == 0) {
@@ -185,16 +178,6 @@ int main(int argc, char* argv[]) {
     }
     
     // 防止select出现意外退出  需要关闭所有的套接字socket
-#ifdef _WIN32
-    for(int n = g_clients.size() - 1; n >= 0 ; n--) 
-    {
-        closesocket(g_clients[n]);
-    }
-    // 关闭套接字closesocket
-    closesocket(sockfd);
-    // 清除Windows socket环境
-    WSACleanup();
-#else
     for(int n = g_clients.size() - 1; n >= 0 ; n--) 
     {
         close(g_clients[n]);
@@ -202,7 +185,6 @@ int main(int argc, char* argv[]) {
 
     // 6 关闭套接字 close socket
     close(sockfd);
-#endif
 
     printf("已退出。\n");
     // getchar();
