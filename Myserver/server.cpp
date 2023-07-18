@@ -161,7 +161,7 @@ int main(int argc, char* argv[]) {
             {
                 if(processor(g_clients[n]) == -1)
                 {
-                    auto iter = g_clients.begin(); // std::vector<socket>::iterator
+                    auto iter = g_clients.begin() + n; // std::vector<socket>::iterator
                     if(iter != g_clients.end()) {
                         g_clients.erase(iter);
                     }
