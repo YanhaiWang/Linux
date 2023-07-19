@@ -1,19 +1,5 @@
-#ifndef __SERVER_H__
-#define __SERVER_H__
-
-#ifdef _WIN32
-    #define WIN32_LEAN_AND_MEAN
-    #include<windows.h>
-    #include<WinSock2.h>
-    #pragma comment(lib, "ws2_32.lib")
-#else
-    #include<unistd.h>
-    #include<arpa/inet.h>
-    #include<string.h>
-    #define SOCKET int
-    #define INVALID_SOCKET (SOCKET) (~0)
-    #define SOCKET_ERROR       (-1)
-#endif
+#ifndef _MESSAGEHEADER_HPP_
+#define _MESSAGEHEADER_HPP_
 
 enum CMD{
     CMD_LOGIN,
@@ -80,5 +66,10 @@ struct NewUserJoin : public DataHeader
     }
     int sock;
 };
+
+// struct DataPackage{
+//     int age;
+//     char name;
+// };
 
 #endif

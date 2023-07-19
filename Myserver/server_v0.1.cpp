@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
 
     int ret = bind(sockfd, (sockaddr*)&_sin, sizeof(_sin));
     
-    if(ret == BIND_ERROR) {
+    if(ret == SOCKET_ERROR) {
         printf("ERROR,绑定网络端口失败...\n");
     }
     else {
@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
     // 3 listen 监听网络端口
     ret = listen(sockfd, 5);
 
-    if(ret == LISTEN_ERROR) {
+    if(ret == SOCKET_ERROR) {
         printf("ERROR,监听端口失败\n");
     }
     else {
