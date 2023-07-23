@@ -28,7 +28,6 @@ int processor(SOCKET _cSockfd)
             printf("收到客户端<Socket=%d>请求: CMD_LOGIN, 数据长度 : %d, userName = %s, PassWord = %s\n", _cSockfd, login->dataLength, login->userName, login->PassWord);
             // 忽略判断用户名密码是否正确的过程
             LoginResult ret;
-            send(_cSockfd, (char*)&header, sizeof(DataHeader), 0);
             send(_cSockfd, (char*)&ret, sizeof(LoginResult), 0);    
         }
         break;
@@ -39,7 +38,6 @@ int processor(SOCKET _cSockfd)
             printf("收到客户端<Socket=%d>请求: CMD_LOGOUT, 数据长度 : %d, userName = %s\n", _cSockfd, logout->dataLength, logout->userName);
             // 忽略判断用户名密码是否正确的过程
             LogoutResult ret;
-            send(_cSockfd, (char*)&header, sizeof(header), 0);
             send(_cSockfd, (char*)&ret, sizeof(ret), 0);
         }
         break;
@@ -57,7 +55,7 @@ int main(int argc, char* argv[]) {
     // 利用Socket API 建立一个简易的TCP服务端
     
     // 1 创建一个socket 套接字
-    SOCKET sockfd = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);  // protocal = 0 自动选择协议
+    SOCKET sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);  // protocal = 0 自动选择协议
     if(sockfd == INVALID_SOCKET) {
         printf("错误,建立Socket失败...\n");
     }
@@ -67,7 +65,7 @@ int main(int argc, char* argv[]) {
 
     // 2 bind 绑定用于接受客户端连接的网络端口
     sockaddr_in _sin = {};
-    _sin.sin_family = PF_INET; // domain 协议族
+    _sin.sin_family = AF_INET; // domain 协议族
     _sin.sin_port = htons(4567); // 端口号 大小端转换字节序 host to net unsigned short
 #ifdef _WIN32
     _sin.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");

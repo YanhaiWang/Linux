@@ -1,3 +1,6 @@
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <stdio.h>
 #include <thread>
 #include "EasyTcpClient1.hpp"
 
@@ -32,25 +35,23 @@ void cmdThread(EasyTcpClient* client)
     }
 }
 
-int main(int argc, char* argv[]) 
-{    
+int main() 
+{
+
     EasyTcpClient client;
     // client.InitSocket();
     client.Connect("127.0.0.1", 4567);
-    // 启动线程
+    // 启动线程函数
     std::thread t1(cmdThread, &client);
     t1.detach(); // 和主线程进程分离
 
     while(client.isRun()) 
     {
-        client.OnRun();
+        client.OnRun();    
         // printf("空闲时间处理其他业务\n");
         // sleep(1);
     }
-
-    // 7 关闭套接字 close
     client.Close();
-
     printf("已退出。\n");
     getchar();
     return 0;
