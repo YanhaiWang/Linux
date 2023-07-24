@@ -104,7 +104,6 @@ public:
         }
     }
 
-
     // 查询网络消息
     bool OnRun()
     {
@@ -190,7 +189,7 @@ public:
         }
     }
 
-    // 发送数据 ???
+    // 发送数据 
     int SendData(DataHeader* header)
     {
         if(isRun() && header)

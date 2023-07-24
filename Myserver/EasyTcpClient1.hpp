@@ -113,14 +113,16 @@ public:
             int ret = select(_sock + 1, &fdRead, NULL, NULL, &t);
             if(ret < 0) {
                 printf("<Socket=%d>select任务结束1\n", _sock);
+                Close();
                 return false;
             }
 
             if(FD_ISSET(_sock, &fdRead)) {
-                FD_CLR(_sock, &fdRead);
+                FD_CLR(_sock, &fdRead); 
 
                 if(RecvData(_sock) == -1) {
                     printf("<Socket=%d>select任务结束2\n", _sock);
+                    Close();
                     return false;
                 }
             }
@@ -130,7 +132,7 @@ public:
     }
 
     // 是否在工作中
-    bool isRun()
+    bool isRun()   
     {
         return _sock != INVALID_SOCKET;
     }
@@ -155,7 +157,7 @@ public:
     }
 
     // 响应网络消息
-    void OnNetMsg(DataHeader* header)
+    virtual void OnNetMsg(DataHeader* header)
     {
         switch(header->cmd) 
         {
@@ -185,7 +187,7 @@ public:
     {
         if(isRun() && header)
         {
-            send(_sock, (const char*)header, header->dataLength, 0);
+            return send(_sock, (const char*)header, header->dataLength, 0);
         }
         return SOCKET_ERROR;
     }
