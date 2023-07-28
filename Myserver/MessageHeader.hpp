@@ -13,6 +13,11 @@ enum CMD{
 // 要保证结构体接收和发送的字节序一致
 struct DataHeader
 {
+    DataHeader()
+    {
+        dataLength = sizeof(DataHeader);
+        cmd = CMD_ERROR;
+    }
     short dataLength;
     short cmd;
 };
@@ -24,8 +29,9 @@ struct Login : public DataHeader
         dataLength = sizeof(Login);
         cmd = CMD_LOGIN;
     }
-    char userName[32];
+    char userName[32]; 
     char PassWord[32];
+    char data[932];
 };
 
 struct LoginResult : public DataHeader
@@ -36,6 +42,7 @@ struct LoginResult : public DataHeader
         result = 0;
     }
     int result;
+    char data[992];
 };
 
 struct Logout : public DataHeader
@@ -46,7 +53,7 @@ struct Logout : public DataHeader
     }
     char userName[32];
 };
-
+ 
 struct LogoutResult : public DataHeader
 {
     LogoutResult() {

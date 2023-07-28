@@ -1,7 +1,8 @@
 #include <thread>
-#include "EasyTcpClient1.hpp"
+#include "EasyTcpClient.hpp"
 
-void cmdThread(EasyTcpClient* client) 
+bool g_bRun = true;
+void cmdThread() 
 {
     while(true)
     {
@@ -9,22 +10,9 @@ void cmdThread(EasyTcpClient* client)
         scanf("%s", cmdBuf);
         if(strcmp(cmdBuf, "exit") == 0)
         {
-            client->Close();
+            g_bRun = false;
             printf("退出cmdThread线程\n");
             break;
-        }
-        else if(strcmp(cmdBuf, "login") == 0)
-        {
-            Login login;
-            strcpy(login.userName, "wyh");
-            strcpy(login.PassWord,"wyhmm");
-            client->SendData(&login);
-        }
-        else if(strcmp(cmdBuf, "logout") == 0)
-        {
-            Logout logout;
-            strcpy(logout.userName, "wyh");
-            client->SendData(&logout);
         }
         else{
             printf("不支持的命令。\n");
@@ -34,24 +22,53 @@ void cmdThread(EasyTcpClient* client)
 
 int main(int argc, char* argv[]) 
 {    
-    EasyTcpClient client;
+    const int cCount = 10;
+    EasyTcpClient* client[cCount];
     // client.InitSocket();
-    client.Connect("127.0.0.1", 4567);
+    for(int n = 0; n < cCount; n++)
+    {
+        if(!g_bRun) 
+        {
+            return 0; 
+        }
+        client[n] = new EasyTcpClient();
+    }
+
+    for(int n = 0; n < cCount; n++)
+    {
+        if(!g_bRun) 
+        {
+            return 0; 
+        }
+        client[n]->Connect("127.0.0.1", 1234); // 104.168.96.123
+    }
+    
     // 启动线程
-    std::thread t1(cmdThread, &client);
+    std::thread t1(cmdThread);
     t1.detach(); // 和主线程进程分离
 
-    while(client.isRun()) 
+    Login login;
+    strcpy(login.userName, "wyh");
+    strcpy(login.PassWord, "wyhmm");
+
+    while(g_bRun) 
     {
-        client.OnRun();
+        for(int n = 0; n < cCount; n++)
+        {
+            client[n]->SendData(&login);
+            // client[n]->OnRun();
+        }
         // printf("空闲时间处理其他业务\n");
         // sleep(1);
     }
-
+ 
     // 7 关闭套接字 close
-    client.Close();
+    for(int n = 0; n < cCount; n++)
+    {
+        client[n]->Close();
+    }
 
     printf("已退出。\n");
-    getchar();
+    // getchar();
     return 0;
 }

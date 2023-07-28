@@ -143,80 +143,48 @@ public:
         return _sock != INVALID_SOCKET;
     }
 
-    // 缓冲区最小单元大小
-#ifndef RECV_BUFF_SIZE
-#define RECV_BUFF_SIZE 10240
-#endif  
-
-    // 接收缓冲区
-    char _szRecv[RECV_BUFF_SIZE] = {};
-    // 第二缓冲区 消息缓冲区
-    char _szMsgBuf[RECV_BUFF_SIZE * 10] = {};
-    // 消息缓冲区的尾部位置
-    int _lastPos = 0;
-
     // 接收数据  处理粘包 拆分包
-    int RecvData(SOCKET cSock)
+    int RecvData(SOCKET _cSock)
     {
+        // 缓冲区接收数据
+        char szRecv[4096] = {};
         // 5 接收客户端数据
-        int nLen = (int)recv(cSock, _szRecv, RECV_BUFF_SIZE, 0);
+        int nLen = recv(_cSock, szRecv, sizeof(DataHeader), 0);
+        DataHeader* header = (DataHeader*)szRecv;
         if(nLen <= 0) 
         {
-            printf("<Socket=%d>与服务器断开连接，任务结束。\n", cSock);
+            printf("<Socket=%d>与服务器断开连接，任务结束。\n", _cSock);
             return -1;
         }
-
-        // 将收取到的数据拷贝到消息缓冲区
-        memcpy(_szMsgBuf + _lastPos, _szRecv, nLen);
-        // 消息缓冲区中的数据尾部位置后移
-        _lastPos += nLen;
-        // 判断消息缓冲区的数据长度是否大于消息头DataHeader长度
-        while (_lastPos >= sizeof(DataHeader))  // 解决粘包
-        {
-            // 此时知道当前消息的长度
-            DataHeader* header = (DataHeader*)_szMsgBuf;
-            // 判断消息缓冲区的数据长度大于消息长度
-            if(_lastPos >= header->dataLength) // 判断是否少包
-            {
-                // 剩余未处理缓冲区数据的长度
-                int nSize = _lastPos - header->dataLength;
-                // 处理网络消息
-                OnNetMsg(header);
-                // 将消息缓冲区剩余未处理数据前移
-                memcpy(_szMsgBuf, _szMsgBuf + header->dataLength, nSize);
-                // 消息缓冲区的数据尾部位置前移
-                _lastPos = nSize;
-            }
-            else {
-                // 消息缓冲区剩余数据不够一条完整消息
-                break;
-            }
-        }
+        // printf("收到命令: %d 数据长度 : %d\n", header.cmd, header.dataLength);
+        
+        recv(_cSock, szRecv + sizeof(DataHeader), header->dataLength - sizeof(DataHeader), 0);
+        OnNetMsg(header);
 
         return 0;
     }
 
     // 响应网络消息
-    virtual void OnNetMsg(DataHeader* header)
+    void OnNetMsg(DataHeader* header)
     {
         switch(header->cmd) 
         {
             case CMD_LOGIN_RESULT: 
             {
                 LoginResult* login = (LoginResult*)header;
-                // printf("<Socket=%d>收到服务端消息: CMD_LOGIN_RESULT, 数据长度 : %d\n", _sock, login->dataLength);
+                printf("<Socket=%d>收到服务端消息: CMD_LOGIN_RESULT, 数据长度 : %d\n", _sock, login->dataLength);
             }
             break;
             case CMD_LOGOUT_RESULT:   
             {
                 LogoutResult* logout = (LogoutResult*)header;
-                // printf("<Socket=%d>收到服务端消息: CMD_LOGOUT_RESULT, 数据长度 : %d\n", _sock, logout->dataLength);
+                printf("<Socket=%d>收到服务端消息: CMD_LOGOUT_RESULT, 数据长度 : %d\n", _sock, logout->dataLength);
             }
             break;
             case CMD_NEW_USER_JOIN: 
             {
                 NewUserJoin* userJoin = (NewUserJoin*)header;
-                // printf("<Socket=%d>收到服务端消息: CMD_NEW_USER_JOIN, 数据长度 : %d\n", _sock, userJoin->dataLength);
+                printf("<Socket=%d>收到服务端消息: CMD_NEW_USER_JOIN, 数据长度 : %d\n", _sock, userJoin->dataLength);
             }
             case CMD_ERROR: 
             {
