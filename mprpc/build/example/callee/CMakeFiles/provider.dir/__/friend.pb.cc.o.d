@@ -1,6 +1,6 @@
-example/callee/CMakeFiles/provider.dir/__/user.pb.cc.o: \
- /home/prj/Linux/mprpc/example/user.pb.cc /usr/include/stdc-predef.h \
- /home/prj/Linux/mprpc/example/user.pb.h /usr/include/c++/7/limits \
+example/callee/CMakeFiles/provider.dir/__/friend.pb.cc.o: \
+ /home/prj/Linux/mprpc/example/friend.pb.cc /usr/include/stdc-predef.h \
+ /home/prj/Linux/mprpc/example/friend.pb.h /usr/include/c++/7/limits \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \

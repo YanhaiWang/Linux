@@ -175,9 +175,11 @@ const char descriptor_table_protodef_user_2eproto[] PROTOBUF_SECTION_VARIABLE(pr
   "ode\022\016\n\006sucess\030\002 \001(\010\"8\n\017RegisterRequest\022\n"
   "\n\002id\030\001 \001(\r\022\014\n\004name\030\002 \001(\014\022\013\n\003pwd\030\003 \001(\014\"F\n"
   "\020RegisterResponse\022\"\n\006result\030\001 \001(\0132\022.fixb"
-  "ug.ResultCode\022\016\n\006sucess\030\002 \001(\0102F\n\016UserSer"
-  "viceRpc\0224\n\005Login\022\024.fixbug.LoginRequest\032\025"
-  ".fixbug.LoginResponseB\003\200\001\001b\006proto3"
+  "ug.ResultCode\022\016\n\006sucess\030\002 \001(\0102\205\001\n\016UserSe"
+  "rviceRpc\0224\n\005Login\022\024.fixbug.LoginRequest\032"
+  "\025.fixbug.LoginResponse\022=\n\010Register\022\027.fix"
+  "bug.RegisterRequest\032\030.fixbug.RegisterRes"
+  "ponseB\003\200\001\001b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_user_2eproto_deps[1] = {
 };
@@ -191,7 +193,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_use
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_user_2eproto_once;
 static bool descriptor_table_user_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_user_2eproto = {
-  &descriptor_table_user_2eproto_initialized, descriptor_table_protodef_user_2eproto, "user.proto", 394,
+  &descriptor_table_user_2eproto_initialized, descriptor_table_protodef_user_2eproto, "user.proto", 458,
   &descriptor_table_user_2eproto_once, descriptor_table_user_2eproto_sccs, descriptor_table_user_2eproto_deps, 5, 0,
   schemas, file_default_instances, TableStruct_user_2eproto::offsets,
   file_level_metadata_user_2eproto, 5, file_level_enum_descriptors_user_2eproto, file_level_service_descriptors_user_2eproto,
@@ -1386,6 +1388,14 @@ void UserServiceRpc::Login(::PROTOBUF_NAMESPACE_ID::RpcController* controller,
   done->Run();
 }
 
+void UserServiceRpc::Register(::PROTOBUF_NAMESPACE_ID::RpcController* controller,
+                         const ::fixbug::RegisterRequest*,
+                         ::fixbug::RegisterResponse*,
+                         ::google::protobuf::Closure* done) {
+  controller->SetFailed("Method Register() not implemented.");
+  done->Run();
+}
+
 void UserServiceRpc::CallMethod(const ::PROTOBUF_NAMESPACE_ID::MethodDescriptor* method,
                              ::PROTOBUF_NAMESPACE_ID::RpcController* controller,
                              const ::PROTOBUF_NAMESPACE_ID::Message* request,
@@ -1401,6 +1411,14 @@ void UserServiceRpc::CallMethod(const ::PROTOBUF_NAMESPACE_ID::MethodDescriptor*
                  response),
              done);
       break;
+    case 1:
+      Register(controller,
+             ::PROTOBUF_NAMESPACE_ID::internal::DownCast<const ::fixbug::RegisterRequest*>(
+                 request),
+             ::PROTOBUF_NAMESPACE_ID::internal::DownCast<::fixbug::RegisterResponse*>(
+                 response),
+             done);
+      break;
     default:
       GOOGLE_LOG(FATAL) << "Bad method index; this should never happen.";
       break;
@@ -1413,6 +1431,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message& UserServiceRpc::GetRequestPrototype(
   switch(method->index()) {
     case 0:
       return ::fixbug::LoginRequest::default_instance();
+    case 1:
+      return ::fixbug::RegisterRequest::default_instance();
     default:
       GOOGLE_LOG(FATAL) << "Bad method index; this should never happen.";
       return *::PROTOBUF_NAMESPACE_ID::MessageFactory::generated_factory()
@@ -1426,6 +1446,8 @@ const ::PROTOBUF_NAMESPACE_ID::Message& UserServiceRpc::GetResponsePrototype(
   switch(method->index()) {
     case 0:
       return ::fixbug::LoginResponse::default_instance();
+    case 1:
+      return ::fixbug::RegisterResponse::default_instance();
     default:
       GOOGLE_LOG(FATAL) << "Bad method index; this should never happen.";
       return *::PROTOBUF_NAMESPACE_ID::MessageFactory::generated_factory()
@@ -1449,6 +1471,13 @@ void UserServiceRpc_Stub::Login(::PROTOBUF_NAMESPACE_ID::RpcController* controll
                               ::fixbug::LoginResponse* response,
                               ::google::protobuf::Closure* done) {
   channel_->CallMethod(descriptor()->method(0),
+                       controller, request, response, done);
+}
+void UserServiceRpc_Stub::Register(::PROTOBUF_NAMESPACE_ID::RpcController* controller,
+                              const ::fixbug::RegisterRequest* request,
+                              ::fixbug::RegisterResponse* response,
+                              ::google::protobuf::Closure* done) {
+  channel_->CallMethod(descriptor()->method(1),
                        controller, request, response, done);
 }
 

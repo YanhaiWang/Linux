@@ -1,5 +1,5 @@
-example/callee/CMakeFiles/provider.dir/userservice.cc.o: \
- /home/prj/Linux/mprpc/example/callee/userservice.cc \
+example/callee/CMakeFiles/provider.dir/friendservice.cc.o: \
+ /home/prj/Linux/mprpc/example/callee/friendservice.cc \
  /usr/include/stdc-predef.h /usr/include/c++/7/iostream \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
@@ -131,7 +131,7 @@ example/callee/CMakeFiles/provider.dir/userservice.cc.o: \
  /usr/include/c++/7/bits/basic_ios.tcc \
  /usr/include/c++/7/bits/ostream.tcc /usr/include/c++/7/istream \
  /usr/include/c++/7/bits/istream.tcc \
- /home/prj/Linux/mprpc/example/user.pb.h /usr/include/c++/7/limits \
+ /home/prj/Linux/mprpc/example/friend.pb.h /usr/include/c++/7/limits \
  /usr/local/include/google/protobuf/port_def.inc \
  /usr/local/include/google/protobuf/port_undef.inc \
  /usr/local/include/google/protobuf/io/coded_stream.h \
@@ -251,6 +251,8 @@ example/callee/CMakeFiles/provider.dir/userservice.cc.o: \
  /usr/include/c++/7/cassert /usr/local/include/google/protobuf/service.h \
  /home/prj/Linux/mprpc/src/include/mprpcapplication.h \
  /home/prj/Linux/mprpc/src/include/mprpcconfig.h \
+ /home/prj/Linux/mprpc/src/include/mprpcchannel.h \
+ /home/prj/Linux/mprpc/src/include/mprpccontroller.h \
  /home/prj/Linux/mprpc/src/include/rpcprovider.h \
  /usr/include/muduo/net/TcpServer.h /usr/include/muduo/base/Atomic.h \
  /usr/include/muduo/base/noncopyable.h /usr/include/muduo/base/Types.h \
@@ -405,4 +407,9 @@ example/callee/CMakeFiles/provider.dir/userservice.cc.o: \
  /usr/include/boost/core/addressof.hpp \
  /usr/include/boost/type_traits/is_same.hpp \
  /usr/include/muduo/net/EventLoop.h /usr/include/muduo/base/Mutex.h \
- /usr/include/muduo/base/CurrentThread.h /usr/include/muduo/net/TimerId.h
+ /usr/include/muduo/base/CurrentThread.h /usr/include/muduo/net/TimerId.h \
+ /home/prj/Linux/mprpc/src/include/logger.h \
+ /home/prj/Linux/mprpc/src/include/lockqueue.h /usr/include/c++/7/queue \
+ /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_deque.h \
+ /usr/include/c++/7/bits/deque.tcc /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/thread /usr/include/c++/7/condition_variable

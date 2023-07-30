@@ -853,6 +853,10 @@ class UserServiceRpc : public ::PROTOBUF_NAMESPACE_ID::Service {
                        const ::fixbug::LoginRequest* request,
                        ::fixbug::LoginResponse* response,
                        ::google::protobuf::Closure* done);
+  virtual void Register(::PROTOBUF_NAMESPACE_ID::RpcController* controller,
+                       const ::fixbug::RegisterRequest* request,
+                       ::fixbug::RegisterResponse* response,
+                       ::google::protobuf::Closure* done);
 
   // implements Service ----------------------------------------------
 
@@ -885,6 +889,10 @@ class UserServiceRpc_Stub : public UserServiceRpc {
   void Login(::PROTOBUF_NAMESPACE_ID::RpcController* controller,
                        const ::fixbug::LoginRequest* request,
                        ::fixbug::LoginResponse* response,
+                       ::google::protobuf::Closure* done);
+  void Register(::PROTOBUF_NAMESPACE_ID::RpcController* controller,
+                       const ::fixbug::RegisterRequest* request,
+                       ::fixbug::RegisterResponse* response,
                        ::google::protobuf::Closure* done);
  private:
   ::PROTOBUF_NAMESPACE_ID::RpcChannel* channel_;

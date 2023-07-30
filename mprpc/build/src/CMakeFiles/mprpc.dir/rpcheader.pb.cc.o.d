@@ -1,6 +1,7 @@
 src/CMakeFiles/mprpc.dir/rpcheader.pb.cc.o: \
  /home/prj/Linux/mprpc/src/rpcheader.pb.cc /usr/include/stdc-predef.h \
- /home/prj/Linux/mprpc/src/rpcheader.pb.h /usr/include/c++/7/limits \
+ /home/prj/Linux/mprpc/src/include/rpcheader.pb.h \
+ /usr/include/c++/7/limits \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
