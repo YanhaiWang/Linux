@@ -5,7 +5,7 @@
 #include <mutex>  // pthread_mutex_t 线程同步互斥的
 #include <condition_variable> // pthread_condition_t 线程间通信用的多
 
-// 异步写日志的的日志队列
+// 异步写日志的的缓冲队列
 template<typename T>
 class LockQueue
 {

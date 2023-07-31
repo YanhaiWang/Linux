@@ -413,4 +413,12 @@ src/CMakeFiles/mprpc.dir/rpcprovider.cc.o: \
  /home/prj/Linux/mprpc/src/include/lockqueue.h /usr/include/c++/7/queue \
  /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_deque.h \
  /usr/include/c++/7/bits/deque.tcc /usr/include/c++/7/bits/stl_queue.h \
- /usr/include/c++/7/thread /usr/include/c++/7/condition_variable
+ /usr/include/c++/7/thread /usr/include/c++/7/condition_variable \
+ /home/prj/Linux/mprpc/src/include/zookeeperutil.h \
+ /usr/include/semaphore.h /usr/include/x86_64-linux-gnu/bits/semaphore.h \
+ /usr/local/include/zookeeper/zookeeper.h \
+ /usr/include/x86_64-linux-gnu/sys/time.h \
+ /usr/local/include/zookeeper/proto.h \
+ /usr/local/include/zookeeper/zookeeper_version.h \
+ /usr/local/include/zookeeper/recordio.h \
+ /usr/local/include/zookeeper/zookeeper.jute.h
